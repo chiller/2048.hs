@@ -1,12 +1,12 @@
 import System.IO
 import Util2048
 
-
 main = do
   hSetEcho stdin False
   hSetBuffering stdin NoBuffering
   hSetBuffering stdout NoBuffering
-  loop [[32,0],[0,0]]
+  tbl <- initTbl 4
+  loop tbl
       where loop tbl = do 
               putStrLn $  printTbl tbl 
               c <- hGetChar stdin

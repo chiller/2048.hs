@@ -1,5 +1,8 @@
 module Util2048 where
 import Data.List
+import System.Random
+import Data.List.Split
+import Data.Char
 
 printTbl :: [[Int]] -> String
 printTbl  = unlines . map (unwords . map show)
@@ -28,7 +31,12 @@ mergeup = transpose . mergeleft . transpose
 mergedown :: [[Int]] -> [[Int]]
 mergedown = transpose . mergeright . transpose
 
+unflatten _ [] = []
+unflatten i xs = [take i xs] ++ unflatten i (drop i xs)
 
---main = do 
---    print $ printTbl [[0,1],[0,1]]
+
+initTbl size = do
+    g <- getStdGen
+    return $ unflatten size $ map (digitToInt . head) $tail $ splitOn ""  $ take (size^2) (randomRs ('0', '1') g)
+
 

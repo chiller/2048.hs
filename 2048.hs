@@ -1,18 +1,5 @@
 import System.IO
-import Data.Char
-
-merge (x:y:xs) 
-    | x == y = [x+x, 0] ++ merge(xs)
-    | otherwise = [x] ++ merge(y:xs)
-merge x = x
-
-shift xs = filter (\x -> x /= 0) xs ++ filter (\x -> x == 0) xs 
-
-mergeleft = shift . merge . shift
-mergeright = reverse . mergeleft . reverse
-
-printTbl :: [Int] -> String
-printTbl  = unwords . map show 
+import Util2048
 
 
 main = do

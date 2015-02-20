@@ -1,3 +1,4 @@
+import System.Console.ANSI
 import System.IO
 import Util2048
 
@@ -9,6 +10,7 @@ main = do
   loop tbl
       where loop tbl = do 
               tp <- fliptbl tbl
+              clearScreen
               putStrLn $  printTbl tp 
               c <- hGetChar stdin
               case c of

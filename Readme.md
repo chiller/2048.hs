@@ -2,9 +2,18 @@
 ==============================
 
 
-Running:
+Deps:
 ```
-ghc 2048.hs;./2048
+cabal install split
+```
+
+Build:
+```
+ghc 2048.hs util2048.hs; ./2048
+```
+Run:
+```
+./2048
 ```
 
 Play with 

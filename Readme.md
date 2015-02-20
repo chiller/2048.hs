@@ -1,3 +1,12 @@
-ghc 2048.hs
+2048 implementation in Haskell
+==============================
 
-./2048
+
+Running:
+```
+ghc 2048.hs;./2048
+```
+
+Play with 
+- WASD - to shift the grid 
+- q -  quits the game

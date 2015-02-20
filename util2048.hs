@@ -3,9 +3,11 @@ import Data.List
 import System.Random
 import Data.List.Split
 import Data.Char
+import Data.Ord
+
 
 printTbl :: [[Int]] -> String
-printTbl  = unlines . map (unwords . map show)
+printTbl xs =  unlines . map unwords $ unflatten (length xs) $ pad . map show . concat $ xs
 
 merge :: [Int] -> [Int]
 merge (x:y:xs) 
@@ -31,7 +33,7 @@ mergeup = transpose . mergeleft . transpose
 mergedown :: [[Int]] -> [[Int]]
 mergedown = transpose . mergeright . transpose
 
-unflatten :: Int -> [Int] -> [[Int]]
+unflatten :: Int -> [a] -> [[a]]
 unflatten _ [] = []
 unflatten i xs = [take i xs] ++ unflatten i (drop i xs)
 
@@ -42,6 +44,12 @@ update1 i (x:xs) = x:(update1 i xs)
 update1 _ [] = []
 
 zeroes = length . filter (\x -> x == 0)
+
+padto i str = replicate (i - length str) ' ' ++ str
+
+pad :: [String] -> [String]
+pad xs = map (padto size) xs
+    where size = length $ maximumBy (comparing length) xs
 
 --todo: refactor me
 initTbl :: Int -> IO [[Int]]
@@ -60,7 +68,6 @@ flipone row = do
 fliptbl tbl = do
   row <-  flipone $ concat tbl
   return $ unflatten (length tbl) row
-
 
 
 

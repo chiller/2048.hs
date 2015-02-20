@@ -8,13 +8,14 @@ main = do
   tbl <- initTbl 4
   loop tbl
       where loop tbl = do 
-              putStrLn $  printTbl tbl 
+              tp <- fliptbl tbl
+              putStrLn $  printTbl tp 
               c <- hGetChar stdin
               case c of
                 'q' -> return ()
-                'a' -> loop $ mergeleft tbl
-                'd' -> loop $ mergeright tbl
-                'w' -> loop $ mergeup tbl
-                's' -> loop $ mergedown tbl
-                input -> loop tbl
+                'a' -> loop $ mergeleft tp
+                'd' -> loop $ mergeright tp
+                'w' -> loop $ mergeup tp
+                's' -> loop $ mergedown tp
+                input -> loop tp
 

@@ -4,7 +4,7 @@
 
 Deps:
 ```
-cabal install split
+cabal install split ansi-terminal
 ```
 
 Build:

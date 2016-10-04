@@ -19,6 +19,7 @@ library
   build-depends:       base >= 4.7 && < 5
                      , split
                      , random
+                     , transformers
   default-language:    Haskell2010
 
 executable game
@@ -28,6 +29,7 @@ executable game
   build-depends:       base
                      , game2048
                      , ansi-terminal
+                     , transformers
   default-language:    Haskell2010
 
 test-suite game2048-test

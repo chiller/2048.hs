@@ -1,38 +1,54 @@
 module Lib where
 
-import Data.List
+import Data.List (transpose, maximumBy)
 import System.Random
 import Data.List.Split
 import Data.Char
 import Data.Ord
+import Control.Monad.Trans.Writer.Lazy (tell, Writer, runWriter)
+import Control.Monad (liftM, (<=<))
 
 
 printTbl :: [[Int]] -> String
 printTbl xs =  unlines . map unwords $ unflatten (length xs) $ pad . map show . concat $ xs
 
-merge :: [Int] -> [Int]
-merge (x:y:xs)
-    | x == y = [x+x, 0] ++ merge(xs)
-    | otherwise = [x] ++ merge(y:xs)
-merge x = x
+mergeWithScore :: [Int] -> ([Int], Int)
+mergeWithScore (x:y:xs)
+    | x == y = let (mxs, sc) = mergeWithScore xs in ([x+x, 0] ++ mxs, x +x + sc)
+    | otherwise = let (myxs, sc) = mergeWithScore (y:xs) in (x:myxs, sc)
+mergeWithScore x = (x, 0)
+
+instance Monoid Int where
+    mempty  = 0
+    mappend = (+)
+
+mergeM :: [Int] -> Writer Int [Int]
+mergeM xs = do
+    let (xs', score) = mergeWithScore xs
+    tell score
+    return xs'
 
 shift :: [Int] -> [Int]
-shift xs = filter (\x -> x /= 0) xs ++ filter (\x -> x == 0) xs
+shift xs = filter (/= 0) xs ++ filter (== 0) xs
 
-mergebase :: [Int] -> [Int]
-mergebase = shift . merge . shift
+shiftM :: [Int] -> Writer Int [Int]
+shiftM xs = return (shift xs)
 
-mergeleft :: [[Int]] -> [[Int]]
-mergeleft = map mergebase
+mergebaseM :: [Int] -> Writer Int [Int]
+mergebaseM = shiftM <=< mergeM <=< shiftM
 
-mergeright :: [[Int]] -> [[Int]]
-mergeright = map $ reverse . mergebase . reverse
+mergeleftM :: [[Int]] -> Writer Int [[Int]]
+mergeleftM = mapM mergebaseM
 
-mergeup :: [[Int]] -> [[Int]]
-mergeup = transpose . mergeleft . transpose
+mergerightM :: [[Int]] -> Writer Int [[Int]]
+mergerightM = mapM $ (return . reverse) <=< mergebaseM <=< (return . reverse)
 
-mergedown :: [[Int]] -> [[Int]]
-mergedown = transpose . mergeright . transpose
+mergeupM :: [[Int]] -> Writer Int [[Int]]
+mergeupM = (return . transpose) <=< mergeleftM <=< ( return . transpose )
+
+mergedownM :: [[Int]] -> Writer Int [[Int]]
+mergedownM = (return . transpose) <=< mergerightM <=< ( return . transpose )
+
 
 unflatten :: Int -> [a] -> [[a]]
 unflatten _ [] = []

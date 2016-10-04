@@ -1,6 +1,9 @@
+module Main where
+
+import Lib
+
 import System.Console.ANSI
 import System.IO
-import Util2048
 
 main = do
   hSetEcho stdin False
@@ -8,10 +11,10 @@ main = do
   hSetBuffering stdout NoBuffering
   tbl <- initTbl 4
   loop tbl
-      where loop tbl = do 
+      where loop tbl = do
               tp <- fliptbl tbl
               clearScreen
-              putStrLn $  printTbl tp 
+              putStrLn $  printTbl tp
               c <- hGetChar stdin
               case c of
                 'q' -> return ()

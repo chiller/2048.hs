@@ -1,4 +1,5 @@
-module Util2048 where
+module Lib where
+
 import Data.List
 import System.Random
 import Data.List.Split
@@ -10,13 +11,13 @@ printTbl :: [[Int]] -> String
 printTbl xs =  unlines . map unwords $ unflatten (length xs) $ pad . map show . concat $ xs
 
 merge :: [Int] -> [Int]
-merge (x:y:xs) 
+merge (x:y:xs)
     | x == y = [x+x, 0] ++ merge(xs)
     | otherwise = [x] ++ merge(y:xs)
 merge x = x
 
 shift :: [Int] -> [Int]
-shift xs = filter (\x -> x /= 0) xs ++ filter (\x -> x == 0) xs 
+shift xs = filter (\x -> x /= 0) xs ++ filter (\x -> x == 0) xs
 
 mergebase :: [Int] -> [Int]
 mergebase = shift . merge . shift

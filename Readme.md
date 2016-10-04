@@ -2,20 +2,16 @@
 ==============================
 
 
-Deps:
-```
-cabal install split ansi-terminal
-```
 
 Build:
 ```
-ghc 2048.hs util2048.hs; ./2048
+stack build
 ```
 Run:
 ```
-./2048
+stack exec game
 ```
 
-Play with 
-- WASD - to shift the grid 
+Play with
+- WASD - to shift the grid
 - q -  quits the game

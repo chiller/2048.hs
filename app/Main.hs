@@ -19,16 +19,16 @@ loop :: ([[Int]], Int) -> IO ()
 loop (tbl, score) = do
       tp <- fliptbl tbl
       clearScreen
-      putStrLn $ "Score: " ++ ( show score)
+      putStrLn $ "Score: " ++ show score
       putStrLn $  printTbl tp
-      c <- hGetChar stdin
+      c <- getChar
       let next = case c of
                 'q' -> Nothing
                 'a' -> Just $ run mergeleftM tp
                 'd' -> Just $ run mergerightM tp
                 'w' -> Just $ run mergeupM tp
                 's' -> Just $ run mergedownM tp
-                input -> Just $ (tp, score)
+                input -> Just (tp, score)
       case next of
-        Nothing -> print score >> return ()
+        Nothing -> print score
         Just (newtable, scoredelta) -> loop (newtable, score + scoredelta)

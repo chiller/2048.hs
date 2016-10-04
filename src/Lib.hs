@@ -52,15 +52,15 @@ mergedownM = (return . transpose) <=< mergerightM <=< ( return . transpose )
 
 unflatten :: Int -> [a] -> [[a]]
 unflatten _ [] = []
-unflatten i xs = [take i xs] ++ unflatten i (drop i xs)
+unflatten i xs = take i xs : unflatten i (drop i xs)
 
 update1 :: Int -> [Int] -> [Int]
-update1 0 (0:xs) = (1:xs)
-update1 i (0:xs) = 0:(update1 (i-1) xs)
-update1 i (x:xs) = x:(update1 i xs)
+update1 0 (0:xs) = 1 : xs
+update1 i (0:xs) = 0 : update1 (i-1) xs
+update1 i (x:xs) = x : update1 i xs
 update1 _ [] = []
 
-zeroes = length . filter (\x -> x == 0)
+zeroes = length . filter (== 0)
 
 padto i str = replicate (i - length str) ' ' ++ str
 
@@ -77,9 +77,8 @@ initTbl size = do
 rollDice :: Int -> IO Int
 rollDice i = getStdRandom (randomR (0,i))
 
-
 flipone row = do
-    i <- rollDice $ (zeroes row) - 1
+    i <- rollDice $ zeroes row - 1
     return $ update1 i row
 
 fliptbl tbl = do

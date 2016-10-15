@@ -1,7 +1,7 @@
 2048 implementation in Haskell
 ==============================
 
-
+![Foo](http://i.imgur.com/MJmauAU.png)
 
 Build:
 ```
